@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: 'Cairo', system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* RTL support: set dir="rtl" on <html> or a wrapper to flip layout.
+   Tailwind's spacing utilities used throughout are logical-friendly
+   where possible (space-x flips automatically are not automatic in Tailwind v3,
+   so components that need it use [dir] selectors below). */
+[dir="rtl"] .flip-x {
+  transform: scaleX(-1);
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: #D6DCEA; border-radius: 999px; }
+
+.tab-underline {
+  position: relative;
+}
+.tab-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 999px;
+  background: #C9962C;
+}
