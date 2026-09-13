@@ -29,9 +29,8 @@ export default function AdminDashboard() {
             <button
               key={s}
               onClick={() => setSection(s)}
-              className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold capitalize ${
-                section === s ? 'bg-brass text-ink-900' : 'bg-white/10 text-parchment/80'
-              }`}
+              className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold capitalize ${section === s ? 'bg-brass text-ink-900' : 'bg-white/10 text-parchment/80'
+                }`}
             >
               {s}
             </button>
@@ -120,10 +119,41 @@ function ContentManager() {
       <Card title="Current structure">
         <div className="space-y-3">
           {years.map((y) => (
-            <div key={y.id}>
-              <p className="font-semibold text-ink-700 text-sm">{y.name}</p>
-              <ul className="text-sm text-ink-400 ps-4 list-disc">
-                {(y.subjects || []).map((s) => <li key={s.id}>{s.name}</li>)}
+            <div key={y.id} className="border-b pb-2">
+              <div className="flex items-center justify-between">
+                <p className="font-semibold text-ink-700 text-sm">{y.name}</p>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    if (confirm(`هل أنت متأكد من حذف "${y.name}"؟`)) {
+                      await supabase.from('academic_years').delete().eq('id', y.id);
+                      window.location.reload();
+                    }
+                  }}
+                  className="text-xs text-red-500 hover:text-red-700 font-bold px-2 py-0.5 rounded bg-red-50"
+                >
+                  حذف السنة
+                </button>
+              </div>
+
+              <ul className="text-sm text-ink-400 ps-4 list-disc mt-1 space-y-1">
+                {(y.subjects || []).map((s) => (
+                  <li key={s.id} className="flex items-center justify-between">
+                    <span>{s.name}</span>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        if (confirm(`هل أنت متأكد من حذف المادة "${s.name}"؟`)) {
+                          await supabase.from('subjects').delete().eq('id', s.id);
+                          window.location.reload();
+                        }
+                      }}
+                      className="text-xs text-red-400 hover:text-red-600 ms-2"
+                    >
+                      حذف
+                    </button>
+                  </li>
+                ))}
               </ul>
             </div>
           ))}
