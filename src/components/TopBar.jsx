@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLang } from '../context/LangContext'
 
+import ThemeToggle from './ThemeToggle'
 export default function TopBar({ title, subtitle, showBack = false }) {
   const navigate = useNavigate()
   const { lang, toggleLang, isRtl } = useLang()
@@ -9,6 +10,7 @@ export default function TopBar({ title, subtitle, showBack = false }) {
   return (
     <header className="sticky top-0 z-20 bg-ink-700 text-parchment px-5 pt-[calc(env(safe-area-inset-top)+18px)] pb-5 rounded-b-[24px] shadow-sm">
       <div className="flex items-start justify-between gap-3">
+        <ThemeToggle />
         <div className="flex items-center gap-2 min-w-0">
           {showBack && (
             <button

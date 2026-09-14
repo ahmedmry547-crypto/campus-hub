@@ -35,7 +35,7 @@ export default function BottomNav() {
   ]
 
   return (
-    <nav className="fixed bottom-0 inset-x-0 z-30 bg-white/95 backdrop-blur border-t border-ink-100 pb-[env(safe-area-inset-bottom)]">
+    <nav className="fixed bottom-0 inset-x-0 z-30 bg-white/95 dark:bg-gray-900/95 backdrop-blur border-t border-ink-100 dark:border-gray-800 pb-[env(safe-area-inset-bottom)] transition-colors">
       <ul className="flex justify-around items-stretch max-w-md mx-auto">
         {items.map((item) => (
           <li key={item.to} className="flex-1">
@@ -47,7 +47,7 @@ export default function BottomNav() {
               {({ isActive }) => (
                 <>
                   {icons[item.key](isActive)}
-                  <span className={isActive ? 'text-brass-dark' : 'text-ink-400'}>{item.label}</span>
+                  <span className={isActive ? 'text-brass-dark dark:text-amber-300' : 'text-ink-400 dark:text-gray-400'}>{item.label}</span>
                 </>
               )}
             </NavLink>

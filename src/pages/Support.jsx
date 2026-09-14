@@ -22,25 +22,25 @@ export default function Support() {
   }
 
   return (
-    <div className="min-h-screen bg-parchment pb-24">
+    <div className="min-h-screen bg-parchment dark:bg-gray-900 text-ink-800 dark:text-white transition-colors pb-24">
       <TopBar title={t('support')} subtitle={t('faqTitle')} />
 
       <div className="px-5 mt-4 space-y-2">
         {dummyFaqs.map((f, i) => (
-          <div key={i} className="bg-white rounded-card border border-ink-50 shadow-sm overflow-hidden">
+          <div key={i} className="bg-white dark:bg-gray-800 rounded-card border border-ink-50 dark:border-gray-700 shadow-sm overflow-hidden">
             <button
               onClick={() => setOpenIndex(openIndex === i ? -1 : i)}
               className="w-full flex items-center justify-between gap-3 p-4 text-start"
             >
-              <span className="font-semibold text-ink-700 text-sm">{lang === 'ar' ? f.q_ar : f.q}</span>
-              <span className={`shrink-0 text-teal transition-transform ${openIndex === i ? 'rotate-45' : ''}`}>
+              <span className="font-semibold text-ink-700 dark:text-white text-sm">{lang === 'ar' ? f.q_ar : f.q}</span>
+              <span className={`shrink-0 text-teal dark:text-teal-400 transition-transform ${openIndex === i ? 'rotate-45' : ''}`}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                   <path d="M12 5v14M5 12h14" />
                 </svg>
               </span>
             </button>
             {openIndex === i && (
-              <p className="px-4 pb-4 text-sm text-ink-400">{lang === 'ar' ? f.a_ar : f.a}</p>
+              <p className="px-4 pb-4 text-sm text-ink-400 dark:text-gray-300">{lang === 'ar' ? f.a_ar : f.a}</p>
             )}
           </div>
         ))}

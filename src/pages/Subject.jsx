@@ -28,19 +28,19 @@ export default function Subject() {
   }, [id])
 
   if (loading) {
-    return <div className="min-h-screen bg-parchment flex items-center justify-center text-ink-400">…</div>
+    return <div className="min-h-screen bg-parchment dark:bg-gray-900 flex items-center justify-center text-ink-400 dark:text-gray-300">…</div>
   }
 
   if (!subject) {
     return (
-      <div className="min-h-screen bg-parchment flex items-center justify-center text-ink-400 px-6 text-center">
+      <div className="min-h-screen bg-parchment dark:bg-gray-900 flex items-center justify-center text-ink-400 dark:text-gray-300 px-6 text-center">
         {t('noContent')}
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-parchment pb-24">
+    <div className="min-h-screen bg-parchment dark:bg-gray-900 dark:text-white pb-24 transition-colors">
       <TopBar
         title={lang === 'ar' ? subject.name_ar : subject.name}
         subtitle={subject.description}
@@ -48,12 +48,12 @@ export default function Subject() {
       />
 
       <div className="px-5">
-        <div className="flex gap-6 border-b border-ink-100 mt-4">
+        <div className="flex gap-6 border-b border-ink-100 dark:border-gray-800 mt-4">
           {TABS.map((key) => (
             <button
               key={key}
               onClick={() => setTab(key)}
-              className={`pb-3 text-sm font-semibold ${tab === key ? 'text-ink-700 tab-underline' : 'text-ink-400'}`}
+              className={`pb-3 text-sm font-semibold ${tab === key ? 'text-ink-700 dark:text-white border-b-2 border-ink-700 dark:border-white' : 'text-gray-400 dark:text-gray-400'}`}
             >
               {t(key)}
             </button>
@@ -69,7 +69,7 @@ export default function Subject() {
                 download
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-3 bg-white rounded-card p-4 shadow-sm border border-ink-50"
+                className="flex items-center gap-3 bg-white dark:bg-gray-800 rounded-card p-4 shadow-sm border border-gray-100 dark:border-gray-700 transition-colors"
               >
                 <div className="w-10 h-10 rounded-xl bg-coral/10 text-coral flex items-center justify-center shrink-0">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -77,8 +77,8 @@ export default function Subject() {
                   </svg>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="font-semibold text-ink-700 truncate">{l.title}</p>
-                  {l.size_label && <p className="text-xs text-ink-400">{l.size_label}</p>}
+                  <p className="font-semibold text-ink-700 dark:text-white truncate">{l.title}</p>
+                  {l.size_label && <p className="text-xs text-ink-400 dark:text-gray-400">{l.size_label}</p>}
                 </div>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3E6259" strokeWidth="2.2">
                   <path d="M12 3v13m0 0-4-4m4 4 4-4M5 20h14" />
@@ -91,7 +91,7 @@ export default function Subject() {
             subject.videos.length ? subject.videos.map((v) => {
               const yid = youtubeEmbedId(v.youtube_url)
               return (
-                <div key={v.id} className="bg-white rounded-card overflow-hidden shadow-sm border border-ink-50">
+                <div key={v.id} className="bg-white dark:bg-gray-800 rounded-card overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 transition-colors">
                   {yid ? (
                     <div className="aspect-video">
                       <iframe
@@ -106,7 +106,7 @@ export default function Subject() {
                       {t('watch')} ↗
                     </a>
                   )}
-                  <p className="px-4 py-3 font-semibold text-ink-700">{v.title}</p>
+                  <p className="px-4 py-3 font-semibold text-ink-700 dark:text-white">{v.title}</p>
                 </div>
               )
             }) : <EmptyState text={t('noContent')} />
@@ -114,7 +114,7 @@ export default function Subject() {
 
           {tab === 'notes' && (
             subject.notes.length ? subject.notes.map((n) => (
-              <div key={n.id} className="bg-white rounded-card p-4 shadow-sm border border-ink-50">
+              <div key={n.id} className="bg-white dark:bg-gray-800 rounded-card p-4 shadow-sm border border-ink-50 dark:border-gray-700 transition-colors">
                 <p className="font-semibold text-ink-700 mb-1">{n.title}</p>
                 <p className="text-sm text-ink-400 whitespace-pre-line">{n.content}</p>
               </div>

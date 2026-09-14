@@ -25,17 +25,17 @@ export default function Suggestions() {
   }
 
   return (
-    <div className="min-h-screen bg-parchment pb-24">
+    <div className="bg-white dark:bg-gray-800 rounded-card p-5 shadow-sm border border-ink-50 dark:border-gray-700">
       <TopBar title={t('suggestions')} subtitle={t('suggestionTitle')} />
 
       <div className="px-5 mt-5">
-        <div className="bg-white rounded-card p-5 shadow-sm border border-ink-50">
-          <div className="w-11 h-11 rounded-2xl bg-brass/15 text-brass-dark flex items-center justify-center mb-3">
+        <div className="min-h-screen bg-parchment dark:bg-gray-900 text-ink-800 dark:text-white transition-colors pb-24">
+          <div className="w-11 h-11 rounded-2xl bg-brass/15 dark:bg-brass/25 text-brass-dark dark:text-amber-300 flex items-center justify-center mb-3">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2Z" /><path d="M9 20h6" />
             </svg>
           </div>
-          <p className="text-sm text-ink-400 mb-4">{t('suggestionSub')}</p>
+          <p className="text-sm text-ink-400 dark:text-gray-400 mb-4">{t('suggestionSub')}</p>
 
           <form onSubmit={handleSubmit} className="space-y-3">
             <textarea
@@ -44,7 +44,7 @@ export default function Suggestions() {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder={t('yourMessage')}
-              className="w-full rounded-xl border border-ink-100 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brass resize-none"
+              className="w-full rounded-xl border border-ink-100 dark:border-gray-600 bg-white dark:bg-gray-700 text-ink-800 dark:text-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brass"
             />
             <button
               disabled={status === 'sending'}
