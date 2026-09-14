@@ -37,11 +37,10 @@ export default function Home() {
             <button
               key={y.id}
               onClick={() => setActiveYear(y.id)}
-              className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition ${
-                activeYear === y.id
-                  ? 'bg-ink-700 text-parchment border-ink-700'
-                  : 'bg-white text-ink-600 border-ink-100'
-              }`}
+              className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition ${activeYear === y.id
+                ? 'bg-ink-700 text-parchment border-ink-700'
+                : 'bg-white text-ink-600 border-ink-100'
+                }`}
             >
               {lang === 'ar' ? y.name_ar : y.name}
             </button>
@@ -76,6 +75,19 @@ export default function Home() {
           {current && current.subjects?.length === 0 && (
             <p className="text-ink-400 text-sm text-center py-10">{t('noContent')}</p>
           )}
+        </div>
+      </div>
+      <div className="w-full my-6 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+        <h2 className="text-base font-bold text-gray-800 mb-3 text-right">
+          مكتبة كافة مواد الكلية (Google Drive)
+        </h2>
+
+        <div className="w-full h-[600px] rounded-xl overflow-hidden border border-gray-200">
+          <iframe
+            src="https://drive.google.com/embeddedfolderview?id=1DSIxbXTzASZ6YEpcovs4CsI_nNXXaAa4#list"
+            className="w-full h-full border-0"
+            title="Google Drive Materials"
+          ></iframe>
         </div>
       </div>
 
