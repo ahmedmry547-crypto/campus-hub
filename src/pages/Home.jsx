@@ -77,19 +77,6 @@ export default function Home() {
           )}
         </div>
       </div>
-      <div className="w-full my-6 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-        <h2 className="text-base font-bold text-gray-800 mb-3 text-right">
-          مكتبة كافة مواد الكلية (Google Drive)
-        </h2>
-
-        <div className="w-full h-[600px] rounded-xl overflow-hidden border border-gray-200">
-          <iframe
-            src="https://drive.google.com/embeddedfolderview?id=1DSIxbXTzASZ6YEpcovs4CsI_nNXXaAa4#list"
-            className="w-full h-full border-0"
-            title="Google Drive Materials"
-          ></iframe>
-        </div>
-      </div>
 
       <BottomNav />
     </div>
