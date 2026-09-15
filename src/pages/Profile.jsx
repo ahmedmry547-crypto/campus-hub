@@ -9,7 +9,7 @@ const YEARS = ['Year 1', 'Year 2', 'Year 3', 'Year 4']
 
 export default function Profile() {
   const { profile, isAdmin, signOut, updateAcademicYear } = useAuth()
-  const { t } = useLang()
+  const { t, lang } = useLang()
   const navigate = useNavigate()
 
   async function handleLogout() {
@@ -64,6 +64,23 @@ export default function Profile() {
         <Link to="/admin/login" className="block text-center text-xs text-ink-400 pt-2">
           {t('admin')}
         </Link>
+      </div>
+
+      <div className="text-center mt-8 pb-4 text-xs text-ink-400 dark:text-gray-400">
+        <p>
+          © {new Date().getFullYear()} CampusHub. {lang === 'ar' ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}
+        </p>
+        <p className="mt-1">
+          {lang === 'ar' ? (
+            <>
+              تطوير وبرمجة <span className="font-semibold text-brass-dark dark:text-amber-300">المهندس أحمد حسين علي</span> 💻
+            </>
+          ) : (
+            <>
+              Developed & Designed by <span className="font-semibold text-brass-dark dark:text-amber-300">Eng. Ahmed Hussein Ali</span> 💻
+            </>
+          )}
+        </p>
       </div>
 
       <BottomNav />

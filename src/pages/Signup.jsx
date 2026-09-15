@@ -8,7 +8,7 @@ const YEARS = ['Year 1', 'Year 2', 'Year 3', 'Year 4']
 
 export default function Signup() {
   const { signUp } = useAuth()
-  const { t } = useLang()
+  const { t, lang } = useLang()
   const navigate = useNavigate()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -64,6 +64,22 @@ export default function Signup() {
         <p className="text-center text-parchment/70 text-sm mt-5">
           <Link to="/login" className="text-brass font-semibold">{t('login')}</Link>
         </p>
+        <div className="text-center mt-6 text-xs text-ink-400 dark:text-gray-400">
+          <p>
+            © {new Date().getFullYear()} CampusHub. {lang === 'ar' ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}
+          </p>
+          <p className="mt-1">
+            {lang === 'ar' ? (
+              <>
+                تطوير وبرمجة <span className="font-semibold text-brass-dark dark:text-amber-300">المهندس أحمد حسين علي</span> 💻
+              </>
+            ) : (
+              <>
+                Developed & Designed by <span className="font-semibold text-brass-dark dark:text-amber-300">Eng. Ahmed Hussein Ali</span> 💻
+              </>
+            )}
+          </p>
+        </div>
       </div>
     </div>
   )

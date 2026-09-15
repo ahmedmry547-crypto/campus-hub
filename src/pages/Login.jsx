@@ -5,7 +5,7 @@ import { useLang } from '../context/LangContext'
 
 export default function Login() {
   const { signIn } = useAuth()
-  const { t } = useLang()
+  const { t, lang } = useLang()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -48,6 +48,22 @@ export default function Login() {
         <p className="text-center text-parchment/70 text-sm mt-5">
           {t('createAccount')}{' '}
           <Link to="/signup" className="text-brass font-semibold">{t('signup')}</Link>
+        </p>
+      </div>
+      <div className="text-center mt-6 text-xs text-ink-400 dark:text-gray-400">
+        <p>
+          © {new Date().getFullYear()} CampusHub. {lang === 'ar' ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}
+        </p>
+        <p className="mt-1">
+          {lang === 'ar' ? (
+            <>
+              تطوير وبرمجة <span className="font-semibold text-brass-dark dark:text-amber-300">المهندس أحمد حسين علي</span> 💻
+            </>
+          ) : (
+            <>
+              Developed & Designed by <span className="font-semibold text-brass-dark dark:text-amber-300">Eng. Ahmed Hussein Ali</span> 💻
+            </>
+          )}
         </p>
       </div>
     </div>
