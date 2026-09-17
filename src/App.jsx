@@ -9,7 +9,7 @@ import Profile from './pages/Profile';
 import AdminLogin from './pages/Admin/AdminLogin';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import { ProtectedRoute, AdminRoute } from './components/RouteGuards';
-import FloatingQuizBot from './components/FloatingQuizBot';
+
 
 export default function App() {
   return (
@@ -30,8 +30,7 @@ export default function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
-      {/* الزر العائم للبوت الذكي */}
-      <FloatingQuizBot />
+      
     </>
   );
 }
