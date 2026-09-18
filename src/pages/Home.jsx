@@ -6,6 +6,8 @@ import { fetchYears } from '../lib/content'
 import { useAuth } from '../context/AuthContext'
 import { useLang } from '../context/LangContext'
 
+const LAST_YEAR_KEY = 'campus-hub-last-year'
+
 export default function Home() {
   const { profile } = useAuth()
   const { t, lang } = useLang()
@@ -16,11 +18,21 @@ export default function Home() {
   useEffect(() => {
     fetchYears().then((data) => {
       setYears(data)
+
+      // لو المستخدم كان مختار ترم قبل كده، فضّله على أي اختيار تاني
+      const savedYearId = localStorage.getItem(LAST_YEAR_KEY)
+      const savedYear = data.find((y) => y.id === savedYearId)
       const preferred = data.find((y) => y.name === profile?.academic_year)
-      setActiveYear((preferred || data[0])?.id || null)
+
+      setActiveYear((savedYear || preferred || data[0])?.id || null)
       setLoading(false)
     })
   }, [profile?.academic_year])
+
+  function handleSelectYear(yearId) {
+    setActiveYear(yearId)
+    localStorage.setItem(LAST_YEAR_KEY, yearId)
+  }
 
   const current = years.find((y) => y.id === activeYear)
 
@@ -36,7 +48,7 @@ export default function Home() {
           {years.map((y) => (
             <button
               key={y.id}
-              onClick={() => setActiveYear(y.id)}
+              onClick={() => handleSelectYear(y.id)}
               className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition ${activeYear === y.id
                 ? 'bg-ink-700 text-parchment border-ink-700'
                 : 'bg-white text-ink-600 border-ink-100'
@@ -63,7 +75,7 @@ export default function Home() {
                     <p className="text-sm text-ink-400 dark:text-gray-400 mt-1 line-clamp-2">{s.description}</p>
                   )}
                 </div>
-                <div className="shrink-0 w-9 h-9 rounded-full bg-parchment-dim dark:bg-gray-700 text-ink-600 dark:text-gray-300 flex items-center ...">
+                <div className="shrink-0 w-9 h-9 rounded-full bg-parchment-dim dark:bg-gray-700 text-ink-600 dark:text-gray-300 flex items-center justify-center">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" className="flip-x">
                     <path d="M9 18l6-6-6-6" />
                   </svg>

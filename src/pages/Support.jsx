@@ -47,14 +47,14 @@ export default function Support() {
       </div>
 
       <div className="px-5 mt-8">
-        <h2 className="font-bold text-ink-700 mb-3">{t('contactUs')}</h2>
-        <form onSubmit={handleSubmit} className="bg-white rounded-card p-4 shadow-sm border border-ink-50 space-y-3">
+        <h2 className="font-bold text-ink-700 dark:text-white mb-3">{t('contactUs')}</h2>
+        <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-card p-4 shadow-sm border border-ink-50 dark:border-gray-700 space-y-3">
           <input
             required
             placeholder={t('name')}
             value={form.name}
             onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-            className="w-full rounded-xl border border-ink-100 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brass"
+            className="w-full rounded-xl border border-ink-100 dark:border-gray-600 bg-white dark:bg-gray-700 text-ink-800 dark:text-white placeholder-ink-300 dark:placeholder-gray-400 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brass"
           />
           <input
             required
@@ -62,7 +62,7 @@ export default function Support() {
             placeholder={t('email')}
             value={form.email}
             onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-            className="w-full rounded-xl border border-ink-100 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brass"
+            className="w-full rounded-xl border border-ink-100 dark:border-gray-600 bg-white dark:bg-gray-700 text-ink-800 dark:text-white placeholder-ink-300 dark:placeholder-gray-400 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brass"
           />
           <textarea
             required
@@ -70,7 +70,7 @@ export default function Support() {
             placeholder={t('yourMessage')}
             value={form.message}
             onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
-            className="w-full rounded-xl border border-ink-100 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brass resize-none"
+            className="w-full rounded-xl border border-ink-100 dark:border-gray-600 bg-white dark:bg-gray-700 text-ink-800 dark:text-white placeholder-ink-300 dark:placeholder-gray-400 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brass resize-none"
           />
           <button
             disabled={status === 'sending'}
@@ -78,7 +78,7 @@ export default function Support() {
           >
             {status === 'sending' ? '…' : t('send')}
           </button>
-          {status === 'sent' && <p className="text-teal text-sm text-center">✓</p>}
+          {status === 'sent' && <p className="text-teal dark:text-teal-400 text-sm text-center">✓</p>}
           {status === 'error' && <p className="text-coral text-sm text-center">Please try again.</p>}
         </form>
       </div>

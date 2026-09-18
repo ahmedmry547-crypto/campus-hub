@@ -115,8 +115,8 @@ export default function Subject() {
           {tab === 'notes' && (
             subject.notes.length ? subject.notes.map((n) => (
               <div key={n.id} className="bg-white dark:bg-gray-800 rounded-card p-4 shadow-sm border border-ink-50 dark:border-gray-700 transition-colors">
-                <p className="font-semibold text-ink-700 mb-1">{n.title}</p>
-                <p className="text-sm text-ink-400 whitespace-pre-line">{n.content}</p>
+                <p className="font-semibold text-ink-700 dark:text-white mb-1">{n.title}</p>
+                <p className="text-sm text-ink-400 dark:text-gray-300 whitespace-pre-line">{n.content}</p>
               </div>
             )) : <EmptyState text={t('noContent')} />
           )}
