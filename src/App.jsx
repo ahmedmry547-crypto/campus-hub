@@ -6,10 +6,12 @@ import Subject from './pages/Subject';
 import Support from './pages/Support';
 import Suggestions from './pages/Suggestions';
 import Profile from './pages/Profile';
+import SupportersWall from './components/SupportersWall'; // 1. استيراد لوحة شرف الداعمين
 import AdminLogin from './pages/Admin/AdminLogin';
 import AdminDashboard from './pages/Admin/AdminDashboard';
+import SupportersControl from './pages/Admin/SupportersControl';
+import FloatingSupportButton from './components/FloatingSupportButton';
 import { ProtectedRoute, AdminRoute } from './components/RouteGuards';
-
 
 export default function App() {
   return (
@@ -23,14 +25,17 @@ export default function App() {
         <Route path="/subject/:id" element={<ProtectedRoute><Subject /></ProtectedRoute>} />
         <Route path="/support" element={<ProtectedRoute><Support /></ProtectedRoute>} />
         <Route path="/suggestions" element={<ProtectedRoute><Suggestions /></ProtectedRoute>} />
+        <Route path="/supporters" element={<ProtectedRoute><SupportersWall /></ProtectedRoute>} /> {/* 2. إضافة مسار الداعمين */}
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
         <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+        <Route path="/admin/supporters" element={<AdminRoute><SupportersControl /></AdminRoute>} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
-      
+      {/* زر الدعم العائم يظهر في كافة صفحات المنصة */}
+      <FloatingSupportButton />
     </>
   );
 }

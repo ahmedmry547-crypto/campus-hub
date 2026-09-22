@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase, PDF_BUCKET } from '../../lib/supabaseClient'
 import { useAuth } from '../../context/AuthContext'
+import { db } from '../../firebase'
+import { collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore'
 
-const SECTIONS = ['content', 'upload', 'suggestions', 'support']
+// زودنا تبويب donations منفصل تماماً
+const SECTIONS = ['content', 'upload', 'suggestions', 'support', 'donations']
 
 export default function AdminDashboard() {
   const { signOut } = useAuth()
@@ -32,7 +35,7 @@ export default function AdminDashboard() {
               className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold capitalize ${section === s ? 'bg-brass text-ink-900' : 'bg-white/10 text-parchment/80'
                 }`}
             >
-              {s}
+              {s === 'donations' ? 'التبرعات' : s === 'support' ? 'رسايل الدعم' : s}
             </button>
           ))}
         </div>
@@ -43,6 +46,7 @@ export default function AdminDashboard() {
         {section === 'upload' && <UploadManager />}
         {section === 'suggestions' && <ListViewer table="suggestions" />}
         {section === 'support' && <ListViewer table="support_requests" />}
+        {section === 'donations' && <DonationsManager />}
       </div>
     </div>
   )
@@ -266,7 +270,91 @@ function UploadManager() {
   )
 }
 
-// ---- Suggestions / Support list viewer ----
+// ---- Donations Manager from Firebase (Tab الجديد للتبرعات) ----
+function DonationsManager() {
+  const [donations, setDonations] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  async function fetchDonations() {
+    try {
+      const querySnapshot = await getDocs(collection(db, "donations"))
+      const list = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      setDonations(list)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchDonations()
+  }, [])
+
+  async function handleStatus(id, newStatus) {
+    try {
+      const docRef = doc(db, "donations", id)
+      await updateDoc(docRef, { status: newStatus })
+      fetchDonations()
+    } catch (err) {
+      alert("Error updating status")
+    }
+  }
+
+  async function handleDelete(id) {
+    if (!confirm("هل أنت متأكد من الحذف؟")) return
+    try {
+      await deleteDoc(doc(db, "donations", id))
+      fetchDonations()
+    } catch (err) {
+      alert("Error deleting")
+    }
+  }
+
+  if (loading) return <p className="text-ink-400 text-sm">جاري التحميل...</p>
+  if (!donations.length) return <p className="text-ink-400 text-sm">لا توجد طلبات تبرع حتى الآن.</p>
+
+  return (
+    <div className="space-y-3">
+      {donations.map((d) => (
+        <div key={d.id} className="bg-white rounded-card p-4 shadow-sm border border-ink-50 flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="font-bold text-ink-700 text-sm">{d.name}</span>
+              <span className="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-600">المبلغ: {d.amount} ج.م</span>
+            </div>
+            <p className="text-xs text-ink-400">الحالة: <span className={`font-semibold ${d.status === 'approved' ? 'text-green-600' : 'text-amber-600'}`}>{d.status}</span></p>
+          </div>
+          <div className="flex gap-2">
+            {d.status !== 'approved' ? (
+              <button
+                onClick={() => handleStatus(d.id, 'approved')}
+                className="bg-green-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold hover:bg-green-700"
+              >
+                موافقة
+              </button>
+            ) : (
+              <button
+                onClick={() => handleStatus(d.id, 'pending')}
+                className="bg-amber-500 text-white text-xs px-3 py-1.5 rounded-lg font-semibold hover:bg-amber-600"
+              >
+                إلغاء
+              </button>
+            )}
+            <button
+              onClick={() => handleDelete(d.id)}
+              className="bg-red-500 text-white text-xs px-3 py-1.5 rounded-lg font-semibold hover:bg-red-600"
+            >
+              حذف
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// ---- Suggestions & Support list viewer (للرسايل العادية) ----
 function ListViewer({ table }) {
   const [rows, setRows] = useState([])
   const [loading, setLoading] = useState(true)
