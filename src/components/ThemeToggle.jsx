@@ -6,18 +6,21 @@ export default function ThemeToggle() {
     });
 
     useEffect(() => {
+        const root = document.documentElement;
+
         if (darkMode) {
-            document.documentElement.classList.add('dark');
+            root.classList.add('dark');
             localStorage.setItem('theme', 'dark');
         } else {
-            document.documentElement.classList.remove('dark');
+            root.classList.remove('dark');
             localStorage.setItem('theme', 'light');
         }
     }, [darkMode]);
 
     return (
         <button
-            onClick={() => setDarkMode(!darkMode)}
+            type="button"
+            onClick={() => setDarkMode((prev) => !prev)}
             className="p-2 px-3 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 transition-colors font-medium text-sm"
         >
             {darkMode ? '☀️ الوضع الفاتح' : '🌙 الوضع الليلي'}

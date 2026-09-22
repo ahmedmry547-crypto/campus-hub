@@ -4,10 +4,10 @@ import {
     collection,
     query,
     where,
-    orderBy,
     onSnapshot
 } from 'firebase/firestore'
 
+import TopBar from './TopBar'
 import BottomNav from './BottomNav'
 
 function getSupporterBadge(amount) {
@@ -51,28 +51,34 @@ function getSupporterBadge(amount) {
 export default function SupportersWall() {
     const [supporters, setSupporters] = useState([])
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(false)
 
     useEffect(() => {
         const q = query(
             collection(db, 'donations'),
-            where('status', '==', 'approved'),
-            orderBy('amount', 'desc')
+            where('status', '==', 'approved')
         )
 
         const unsubscribe = onSnapshot(
             q,
             (snapshot) => {
-                const list = snapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    ...doc.data()
-                }))
+                const list = snapshot.docs
+                    .map((doc) => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }))
+                    .sort((a, b) => {
+                        return (Number(b.amount) || 0) - (Number(a.amount) || 0)
+                    })
 
                 setSupporters(list)
                 setLoading(false)
+                setError(false)
             },
-            (error) => {
-                console.error('Error loading supporters:', error)
+            (firebaseError) => {
+                console.error('Error loading supporters:', firebaseError)
                 setLoading(false)
+                setError(true)
             }
         )
 
@@ -84,25 +90,30 @@ export default function SupportersWall() {
             className="min-h-screen bg-parchment dark:bg-gray-900 text-ink-800 dark:text-white transition-colors pb-24"
             dir="rtl"
         >
-            {/* الهيدر */}
-            <header className="bg-ink-700 dark:bg-gray-900 text-parchment dark:text-gray-100 px-5 pt-[calc(env(safe-area-inset-top)+20px)] pb-6 rounded-b-[24px] shadow-md">
-                <div className="max-w-md mx-auto">
-                    <h1 className="text-xl font-bold">
-                        لوحة شرف الداعمين
-                    </h1>
+            {/* نفس الهيدر المستخدم في الدعم */}
+            <TopBar
+                title="الداعمين"
+                subtitle="لوحة شرف الأبطال المساهمين في استمرار المنصة 🌟"
+            />
 
-                    <p className="text-xs text-parchment/80 dark:text-gray-400 mt-1">
-                        لوحة شرف الأبطال المساهمين في استمرار المنصة 🌟
-                    </p>
-                </div>
-            </header>
-
-            {/* المحتوى */}
             <div className="px-5 mt-5">
                 {loading ? (
                     <p className="text-center text-ink-400 dark:text-gray-500 text-sm py-10">
-                        جاري التحميل...
+                        جاري تحميل الداعمين...
                     </p>
+                ) : error ? (
+                    <div className="bg-white dark:bg-gray-800 rounded-card p-6 text-center shadow-sm border border-ink-50 dark:border-gray-700">
+                        <p className="text-sm text-coral mb-2">
+                            حدث خطأ أثناء تحميل قائمة الداعمين.
+                        </p>
+
+                        <button
+                            onClick={() => window.location.reload()}
+                            className="text-sm bg-teal text-white px-4 py-2 rounded-xl"
+                        >
+                            إعادة المحاولة
+                        </button>
+                    </div>
                 ) : supporters.length === 0 ? (
                     <div className="bg-white dark:bg-gray-800 rounded-card p-6 text-center shadow-sm border border-ink-50 dark:border-gray-700">
                         <p className="text-sm text-ink-400 dark:text-gray-400">
@@ -132,7 +143,7 @@ export default function SupportersWall() {
 
                                         <div>
                                             <span className="font-bold text-ink-700 dark:text-gray-200 block text-sm">
-                                                {item.name}
+                                                {item.name || 'داعم كريم'}
                                             </span>
 
                                             <span className="text-[11px] text-ink-400 dark:text-gray-500">
@@ -153,7 +164,6 @@ export default function SupportersWall() {
                 )}
             </div>
 
-            {/* شريط التنقل السفلي */}
             <BottomNav />
         </div>
     )
