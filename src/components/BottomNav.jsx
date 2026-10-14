@@ -35,6 +35,7 @@ const icons = {
     </svg>
   ),
 
+  // أيقونة تطبيقاتي (هاتف ذكي)
   support: (active) => (
     <svg
       width="22"
@@ -46,9 +47,8 @@ const icons = {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <circle cx="12" cy="12" r="9" />
-      <path d="M9.5 9a2.5 2.5 0 1 1 3.4 2.3c-.9.4-1.4 1-1.4 1.9" />
-      <path d="M12 17h.01" />
+      <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+      <line x1="12" y1="18" x2="12.01" y2="18" />
     </svg>
   ),
 
@@ -101,7 +101,7 @@ export default function BottomNav() {
     {
       to: '/support',
       key: 'support',
-      label: t('support') || 'الدعم'
+      label: 'تطبيقاتي' // تم التغيير هنا من "الدعم" إلى "تطبيقاتي"
     },
     {
       to: '/supporters',
