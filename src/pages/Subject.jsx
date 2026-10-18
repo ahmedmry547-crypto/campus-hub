@@ -12,6 +12,35 @@ function youtubeEmbedId(url) {
   return match ? match[1] : null
 }
 
+// الفيديو مش بيتحمّل غير لما الطالب يضغط عليه
+function VideoEmbed({ yid, title }) {
+  const [play, setPlay] = useState(false)
+  if (play) {
+    return (
+      <iframe
+        className="w-full h-full"
+        src={`https://www.youtube.com/embed/${yid}?autoplay=1`}
+        title={title}
+        allow="autoplay; fullscreen"
+        allowFullScreen
+      />
+    )
+  }
+  return (
+    <button onClick={() => setPlay(true)} className="relative w-full h-full">
+      <img
+        src={`https://i.ytimg.com/vi/${yid}/hqdefault.jpg`}
+        alt={title}
+        loading="lazy"
+        className="w-full h-full object-cover"
+      />
+      <span className="absolute inset-0 flex items-center justify-center">
+        <span className="w-14 h-14 rounded-full bg-black/60 text-white flex items-center justify-center text-xl">▶</span>
+      </span>
+    </button>
+  )
+}
+
 export default function Subject() {
   const { id } = useParams()
   const { t, lang } = useLang()
@@ -20,11 +49,14 @@ export default function Subject() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    let cancelled = false
     setLoading(true)
     fetchSubject(id).then((s) => {
+      if (cancelled) return
       setSubject(s)
       setLoading(false)
     })
+    return () => { cancelled = true }
   }, [id])
 
   if (loading) {
@@ -66,7 +98,6 @@ export default function Subject() {
               <a
                 key={l.id}
                 href={l.file_url || pdfPublicUrl(l.file_path)}
-                download
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-3 bg-white dark:bg-gray-800 rounded-card p-4 shadow-sm border border-gray-100 dark:border-gray-700 transition-colors"
@@ -94,12 +125,7 @@ export default function Subject() {
                 <div key={v.id} className="bg-white dark:bg-gray-800 rounded-card overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 transition-colors">
                   {yid ? (
                     <div className="aspect-video">
-                      <iframe
-                        className="w-full h-full"
-                        src={`https://www.youtube.com/embed/${yid}`}
-                        title={v.title}
-                        allowFullScreen
-                      />
+                      <VideoEmbed yid={yid} title={v.title} />
                     </div>
                   ) : (
                     <a href={v.youtube_url} target="_blank" rel="noreferrer" className="block p-4 text-teal font-semibold">

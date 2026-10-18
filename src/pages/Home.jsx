@@ -15,19 +15,25 @@ export default function Home() {
   const [activeYear, setActiveYear] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  // تحميل البيانات مرة واحدة بس
   useEffect(() => {
+    let cancelled = false
     fetchYears().then((data) => {
+      if (cancelled) return
       setYears(data)
-
-      // لو المستخدم كان مختار ترم قبل كده، فضّله على أي اختيار تاني
-      const savedYearId = localStorage.getItem(LAST_YEAR_KEY)
-      const savedYear = data.find((y) => y.id === savedYearId)
-      const preferred = data.find((y) => y.name === profile?.academic_year)
-
-      setActiveYear((savedYear || preferred || data[0])?.id || null)
       setLoading(false)
     })
-  }, [profile?.academic_year])
+    return () => { cancelled = true }
+  }, [])
+
+  // اختيار الترم (من غير أي طلب شبكة)
+  useEffect(() => {
+    if (years.length === 0) return
+    const savedYearId = localStorage.getItem(LAST_YEAR_KEY)
+    const savedYear = years.find((y) => y.id === savedYearId)
+    const preferred = years.find((y) => y.name === profile?.academic_year)
+    setActiveYear((savedYear || preferred || years[0])?.id || null)
+  }, [years, profile?.academic_year])
 
   function handleSelectYear(yearId) {
     setActiveYear(yearId)

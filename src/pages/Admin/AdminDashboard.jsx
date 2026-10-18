@@ -71,8 +71,8 @@ export default function AdminDashboard() {
               key={s}
               onClick={() => setSection(s)}
               className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition ${section === s
-                  ? 'bg-brass text-ink-900'
-                  : 'bg-white/10 text-parchment/80'
+                ? 'bg-brass text-ink-900'
+                : 'bg-white/10 text-parchment/80'
                 }`}
             >
               {SECTION_NAMES[s]}
@@ -370,7 +370,10 @@ function UploadManager() {
 
     const { error: uploadError } = await supabase.storage
       .from(PDF_BUCKET)
-      .upload(path, file)
+      .upload(path, file, {
+        cacheControl: '31536000',
+        upsert: false
+      })
 
     if (uploadError) {
       setMsg(uploadError.message)
@@ -637,8 +640,8 @@ function DonationsManager() {
               الحالة:{' '}
 
               <span className={`font-semibold ${d.status === 'approved'
-                  ? 'text-green-600'
-                  : 'text-amber-600'
+                ? 'text-green-600'
+                : 'text-amber-600'
                 }`}>
                 {d.status === 'approved' ? 'مقبول' : 'معلق'}
               </span>
